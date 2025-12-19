@@ -41,9 +41,19 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS configuration - Allow multiple origins for development
+// CORS configuration - Allow multiple origins for development and production
 app.use(cors({
-  origin: true, // Allow all origins for development
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:5173',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+    // Production frontend URLs
+    'https://web-dev-hub-iota.vercel.app',
+    'https://webdevhub.vercel.app',
+    'https://frontend-webdev.vercel.app'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
