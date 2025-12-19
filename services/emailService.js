@@ -6,6 +6,11 @@ dotenv.config();
 
 // Create a transporter for sending emails
 const createTransporter = () => {
+    // Validate required environment variables
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        throw new Error('Email credentials not configured. Please set EMAIL_USER and EMAIL_PASS environment variables.');
+    }
+
     // Gmail SMTP configuration
     if (process.env.EMAIL_HOST === 'smtp.gmail.com') {
         return nodemailer.createTransport({
@@ -19,20 +24,33 @@ const createTransporter = () => {
             },
             tls: {
                 rejectUnauthorized: false
-            }
+            },
+            debug: process.env.NODE_ENV === 'development',
+            logger: process.env.NODE_ENV === 'development'
         });
     }
 
     // Default configuration for other providers
-    return nodemailer.createTransport({
+    const config = {
         host: process.env.EMAIL_HOST || 'smtp.ethereal.email',
         port: parseInt(process.env.EMAIL_PORT) || 587,
-        secure: false, // true for 465, false for other ports
+        secure: process.env.EMAIL_PORT === '465', // true for 465, false for other ports
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
         },
-    });
+        debug: process.env.NODE_ENV === 'development',
+        logger: process.env.NODE_ENV === 'development'
+    };
+
+    // Add TLS configuration for better compatibility
+    if (process.env.EMAIL_HOST && process.env.EMAIL_HOST.includes('gmail')) {
+        config.tls = {
+            rejectUnauthorized: false
+        };
+    }
+
+    return nodemailer.createTransport(config);
 };
 
 // Send welcome email to new users
@@ -52,7 +70,14 @@ export const sendWelcomeEmail = async (userEmail, username) => {
         return { success: true, messageId: info.messageId };
     } catch (error) {
         console.error('❌ Error sending welcome email:', error);
-        return { success: false, error: error.message };
+        // Log detailed error for debugging
+        console.error('Email error details:', {
+            code: error.code,
+            command: error.command,
+            response: error.response,
+            responseCode: error.responseCode
+        });
+        return { success: false, error: error.message, code: error.code };
     }
 };
 
@@ -175,7 +200,12 @@ export const sendAutoReplyToUser = async ({ name, email, subject, message }) => 
         return { success: true, messageId: info.messageId };
     } catch (error) {
         console.error('❌ Error sending auto-reply to user:', error);
-        return { success: false, error: error.message };
+        console.error('Email error details:', {
+            code: error.code,
+            command: error.command,
+            response: error.response
+        });
+        return { success: false, error: error.message, code: error.code };
     }
 };
 
@@ -205,11 +235,31 @@ export const testEmailConnection = async () => {
     try {
         const transporter = createTransporter();
         await transporter.verify();
-        console.log('Email service is ready');
-        return { success: true };
+        console.log('✅ Email service is ready');
+        return { 
+            success: true, 
+            message: 'Email service connection verified successfully',
+            config: {
+                host: process.env.EMAIL_HOST,
+                port: process.env.EMAIL_PORT,
+                user: process.env.EMAIL_USER,
+                secure: process.env.EMAIL_HOST === 'smtp.gmail.com' ? false : undefined
+            }
+        };
     } catch (error) {
-        console.error('Email service error:', error);
-        return { success: false, error: error.message };
+        console.error('❌ Email service error:', error);
+        return { 
+            success: false, 
+            error: error.message,
+            code: error.code,
+            command: error.command,
+            config: {
+                host: process.env.EMAIL_HOST,
+                port: process.env.EMAIL_PORT,
+                user: process.env.EMAIL_USER ? process.env.EMAIL_USER.replace(/(.{3}).*(@.*)/, '$1***$2') : 'Not set',
+                hasPassword: !!process.env.EMAIL_PASS
+            }
+        };
     }
 };
 

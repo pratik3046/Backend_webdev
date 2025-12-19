@@ -152,21 +152,40 @@ app.get('/api/test-email', async (_req, res) => {
     const result = await testEmailConnection();
     
     res.json({
-      status: 'OK',
+      status: result.success ? 'OK' : 'ERROR',
       message: 'Email test completed',
+      timestamp: new Date().toISOString(),
       emailConfig: {
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT,
         user: process.env.EMAIL_USER ? '***@' + process.env.EMAIL_USER.split('@')[1] : 'Not set',
-        hasPassword: !!process.env.EMAIL_PASS
+        hasPassword: !!process.env.EMAIL_PASS,
+        frontendUrl: process.env.FRONTEND_URL
       },
-      result
+      result,
+      troubleshooting: result.success ? null : {
+        commonSolutions: [
+          "Verify Gmail 2FA is enabled and generate new App Password",
+          "Check EMAIL_USER and EMAIL_PASS environment variables",
+          "Ensure no spaces in app password",
+          "Verify Gmail account is not locked or suspended",
+          "Check if less secure app access is disabled (should be)"
+        ],
+        testSteps: [
+          "1. Go to Google Account Settings > Security",
+          "2. Enable 2-Step Verification if not already enabled",
+          "3. Generate App Password for Mail",
+          "4. Update EMAIL_PASS with the 16-character app password",
+          "5. Redeploy or restart the application"
+        ]
+      }
     });
   } catch (error) {
     res.status(500).json({
       status: 'ERROR',
       message: 'Email test failed',
-      error: error.message
+      error: error.message,
+      timestamp: new Date().toISOString()
     });
   }
 });

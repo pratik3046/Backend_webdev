@@ -286,7 +286,7 @@ export const getAutoReplyTemplate = ({ name, email, subject, message }) => {
         In the meantime, feel free to explore our latest blog posts and join the discussions in our community forum.
     </div>
     
-    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/blog" class="button">
+    <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/blog" class="button">
         📚 Explore Our Blog
     </a>
     
@@ -364,7 +364,7 @@ export const getWelcomeEmailTemplate = (userEmail, username) => {
         </p>
     </div>
     
-    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/profile" class="button">
+    <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/profile" class="button">
         🎯 Complete Your Profile
     </a>
     
@@ -398,7 +398,7 @@ export const getCommentNotificationTemplate = (postAuthorEmail, commenterName, p
         <p><strong>Action:</strong> New comment added</p>
     </div>
     
-    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/blog" class="button">
+    <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/blog" class="button">
         👀 View Comment
     </a>
     
@@ -432,7 +432,7 @@ export const getForumReplyNotificationTemplate = (threadAuthorEmail, replierName
         <p><strong>Action:</strong> New reply added</p>
     </div>
     
-    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/forum" class="button">
+    <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/forum" class="button">
         🔍 View Reply
     </a>
     

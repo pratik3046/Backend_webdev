@@ -211,6 +211,66 @@ forumpage-backend/
 - `POST /api/contact` - Submit contact form
 - `GET /api/contact` - Get all contact submissions (🔒 protected)
 
+## 📧 Email Service Configuration
+
+The backend includes a comprehensive email service for notifications, welcome emails, and contact form responses.
+
+### Email Setup
+
+1. **Gmail Configuration (Recommended)**
+   ```env
+   EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_USER=your-email@gmail.com
+   EMAIL_PASS=your-app-password
+   EMAIL_FROM=your-email@gmail.com
+   ADMIN_EMAIL=admin@gmail.com
+   ```
+
+2. **Generate Gmail App Password**
+   - Enable 2-Factor Authentication on your Gmail account
+   - Go to Google Account Settings > Security > 2-Step Verification
+   - Generate an "App Password" for "Mail"
+   - Use this 16-character password as `EMAIL_PASS`
+
+### Email Testing Endpoints
+
+- `GET /api/test-email` - Test email connection
+- `POST /api/send-test-email` - Send a test email
+- `GET /api/preview-email/{type}` - Preview email templates
+
+### Email Templates Available
+
+1. **welcome** - New user welcome email
+2. **auto-reply** - Contact form auto-reply
+3. **admin-notification** - Contact form admin notification
+4. **custom-reply** - Custom response to contact
+5. **comment-notification** - New comment notification
+6. **forum-reply** - Forum reply notification
+
+### Troubleshooting Email Issues
+
+**535 Authentication Failed Error:**
+1. Verify Gmail 2FA is enabled
+2. Generate a new App Password
+3. Update `EMAIL_PASS` in environment variables
+4. Ensure no spaces in the app password
+5. Check that the Gmail account is not locked
+
+**Connection Timeout:**
+1. Verify `EMAIL_HOST` and `EMAIL_PORT` are correct
+2. Check firewall settings
+3. Ensure network allows SMTP connections
+
+**Testing Email Service:**
+```bash
+# Test connection
+curl https://your-backend-url/api/test-email
+
+# Send test email
+curl -X POST https://your-backend-url/api/send-test-email
+```
+
 ## 🔐 Authentication
 
 The API uses JWT (JSON Web Tokens) for authentication:
