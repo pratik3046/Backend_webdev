@@ -286,7 +286,7 @@ export const getAutoReplyTemplate = ({ name, email, subject, message }) => {
         In the meantime, feel free to explore our latest blog posts and join the discussions in our community forum.
     </div>
     
-    <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/blog" class="button">
+    <a href="${process.env.FRONTEND_URL }/blog" class="button">
         📚 Explore Our Blog
     </a>
     

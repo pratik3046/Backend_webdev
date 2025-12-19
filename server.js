@@ -141,7 +141,11 @@ app.get('/api/test', (_req, res) => {
     status: 'OK',
     message: 'Test endpoint working',
     timestamp: new Date().toISOString(),
-    hasMongoUri: !!process.env.MONGODB_URI
+    hasMongoUri: !!process.env.MONGODB_URI,
+    environment: process.env.NODE_ENV,
+    hasEmailUser: !!process.env.EMAIL_USER,
+    hasEmailPass: !!process.env.EMAIL_PASS,
+    emailPassLength: process.env.EMAIL_PASS ? process.env.EMAIL_PASS.length : 0
   });
 });
 
