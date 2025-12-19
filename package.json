@@ -1,0 +1,32 @@
+{
+  "name": "forumpage-backend",
+  "version": "1.0.0",
+  "description": "Backend for MERN stack forum application",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'Build completed'",
+    "seed": "node scripts/seedDatabase.js",
+    "setup-env": "node setup-env.js",
+    "security-check": "echo 'Running security checks...' && node -e \"console.log('✅ Environment files check:'); const fs = require('fs'); console.log('.env exists:', fs.existsSync('.env')); console.log('.env in .gitignore:', fs.readFileSync('.gitignore', 'utf8').includes('.env'));\"",
+    "vercel-build": "echo 'Vercel build completed'"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
+    "nodemailer": "^7.0.11"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
