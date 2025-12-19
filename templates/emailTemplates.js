@@ -205,9 +205,9 @@ const getBaseTemplate = (content, title = 'Web Dev Hub') => {
             <p>Stay updated with the latest in web development</p>
             
             <div class="social-links">
-                <a href="#">Blog</a> • 
-                <a href="#">Forum</a> • 
-                <a href="#">Contact</a>
+                <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/blog">Blog</a> • 
+                <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/forum">Forum</a> • 
+                <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/contact">Contact</a>
             </div>
             
             <div class="divider"></div>
@@ -250,6 +250,17 @@ export const getCustomReplyTemplate = (contactData, replyMessage) => {
         We hope this response addresses your inquiry. If you have any follow-up questions or need further assistance, please don't hesitate to reach out to us again.
     </div>
     
+    <div class="highlight-box">
+        <h3>📖 Continue Learning</h3>
+        <p>Don't forget to check out our latest blog posts and join our community discussions for more web development insights and tips!</p>
+    </div>
+    
+    <div style="text-align: center; margin: 20px 0;">
+        <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/blog" class="button">
+            📚 Explore Blog Posts
+        </a>
+    </div>
+    
     <div class="message">
         <strong>Best regards,</strong><br>
         The Web Dev Hub Team
@@ -282,13 +293,20 @@ export const getAutoReplyTemplate = ({ name, email, subject, message }) => {
         </div>
     </div>
     
-    <div class="message">
-        In the meantime, feel free to explore our latest blog posts and join the discussions in our community forum.
+    <div class="highlight-box">
+        <h3>🚀 While You Wait, Explore Our Content!</h3>
+        <p>Discover our latest blog posts covering modern web development topics including Next.js, TypeScript, React, and more. Join our community discussions and connect with fellow developers!</p>
     </div>
     
-    <a href="${process.env.FRONTEND_URL }/blog" class="button">
-        📚 Explore Our Blog
-    </a>
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/blog" class="button">
+            📚 Read Our Blog Posts
+        </a>
+        <br>
+        <a href="${process.env.FRONTEND_URL || 'https://web-dev-hub-iota.vercel.app'}/forum" class="button" style="margin-top: 10px;">
+            💬 Join Forum Discussions
+        </a>
+    </div>
     
     <div class="message">
         <strong>Thank you for being part of our community!</strong><br>
